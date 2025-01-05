@@ -8,6 +8,12 @@ class Player {
         this.vy = 0;
         this.weight = 1;
         this.isJumping = false;
+
+        // Load sound with error handling
+        this.jumpSound = new Audio('sounds/jump.mp3');
+        this.jumpSound.onerror = () => {
+            console.log('Jump sound failed to load - continuing without sound');
+        };
     }
 
     update() {
@@ -32,9 +38,16 @@ class Player {
         if (!this.isJumping) {
             this.vy = -20;
             this.isJumping = true;
-            // Play jump sound
-            const jumpSound = new Audio('sounds/jump.mp3');
-            jumpSound.play();
+            
+            // Try to play sound, catch any errors
+            try {
+                this.jumpSound.currentTime = 0; // Reset sound
+                this.jumpSound.play().catch(error => {
+                    console.log('Error playing jump sound:', error);
+                });
+            } catch (error) {
+                console.log('Jump sound error:', error);
+            }
         }
     }
 
