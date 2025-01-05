@@ -4,8 +4,8 @@ class WalletLogin {
         this.provider = null;
         this.signer = null;
         
-        // Force disconnect on page load/refresh
-        this.handleDisconnect();
+        // Force disconnect and clear permissions on page load/refresh
+        this.forceDisconnect();
         
         // Check for any Web3 provider
         if (window.ethereum) {
@@ -18,13 +18,38 @@ class WalletLogin {
                 console.log('MetaMask is available');
             }
             
-            // Clear any existing connections
+            // Clear any existing connections and cached permissions
             window.ethereum.removeAllListeners();
         } else {
             console.log('No Web3 provider detected');
         }
         
         this.init();
+    }
+
+    async forceDisconnect() {
+        if (window.ethereum) {
+            try {
+                // Force disconnect all accounts
+                await window.ethereum.request({
+                    method: "wallet_requestPermissions",
+                    params: [{
+                        eth_accounts: {}
+                    }]
+                });
+                
+                // Clear any cached permissions
+                await window.ethereum.request({
+                    method: "wallet_revokePermissions",
+                    params: [{
+                        eth_accounts: {}
+                    }]
+                });
+            } catch (error) {
+                console.log('Error forcing disconnect:', error);
+            }
+        }
+        this.handleDisconnect();
     }
 
     async init() {
@@ -137,10 +162,23 @@ class WalletLogin {
         // Clear any stored wallet data
         if (window.ethereum) {
             try {
-                // Some wallets support manual disconnection
+                // Remove all event listeners
                 window.ethereum.removeAllListeners();
+                // Clear any cached connections
+                window.ethereum.request({
+                    method: "eth_accounts"
+                }).then(accounts => {
+                    if (accounts.length > 0) {
+                        window.ethereum.request({
+                            method: "wallet_requestPermissions",
+                            params: [{
+                                eth_accounts: {}
+                            }]
+                        });
+                    }
+                });
             } catch (error) {
-                console.log('Error clearing wallet listeners:', error);
+                console.log('Error clearing wallet data:', error);
             }
         }
     }
