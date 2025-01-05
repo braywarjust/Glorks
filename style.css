@@ -5,43 +5,20 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     background-color: #f0f0f0;
-}
-
-#game-container {
-    position: relative;
-    display: none;
-}
-
-#gameCanvas {
-    border: 2px solid #000;
-}
-
-#score {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
     font-family: Arial, sans-serif;
 }
 
-#login-container {
-    text-align: center;
-    padding: 2rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: block;
-    width: 100%;
-    max-width: 400px;
+header {
+    background: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-#login-container h1 {
-    margin-bottom: 2rem;
+h1 {
     color: #333;
 }
 
@@ -49,7 +26,7 @@ body {
     background: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -60,121 +37,25 @@ body {
     background: #45a049;
 }
 
-#wallet-address {
-    margin-top: 1rem;
-    color: #666;
-    font-family: monospace;
+#connect-wallet.connected {
+    background: #666;
 }
 
-.error {
-    color: #ff0000;
-    margin-top: 1rem;
-    display: none;
-}
-
-.wallet-info {
-    color: #666;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-}
-
-#wallet-address {
-    background: #f5f5f5;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    margin-top: 1rem;
-    font-family: monospace;
-}
-
-#connect-wallet:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-
-#profile-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-}
-
-#profile-button {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
+#game-container {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
+    min-height: calc(100vh - 70px);
+    padding: 2rem;
 }
 
-#profile-button:hover {
-    background: #45a049;
+#gameCanvas {
+    border: 2px solid #000;
 }
 
-.profile-icon {
-    width: 20px;
-    height: 20px;
-    filter: invert(1);
-}
-
-#profile-address {
-    font-family: monospace;
-}
-
-#profile-dropdown {
+#score {
     position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    padding: 8px 0;
-    min-width: 220px;
-    display: none;
-}
-
-#profile-dropdown.show {
-    display: block;
-}
-
-.dropdown-item {
-    padding: 8px 16px;
-    color: #333;
-    text-align: left;
-    font-size: 14px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-}
-
-#disconnect-wallet {
-    width: 100%;
-    text-align: left;
-    background: none;
-    border: none;
-    color: #ff4444;
-    cursor: pointer;
-    padding: 8px 16px;
-    font-size: 14px;
-    margin-top: 4px;
-    border-top: 1px solid #eee;
-}
-
-#disconnect-wallet:hover {
-    background: #fff1f1;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Make sure the profile button is visible when not hidden */
-#profile-button:not(.hidden) {
-    display: flex !important;
+    top: 90px;
+    left: 20px;
+    font-size: 24px;
 } 

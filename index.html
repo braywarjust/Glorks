@@ -3,50 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NFT Runner Game</title>
+    <title>Glorks</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="profile-container">
-        <button id="profile-button" class="hidden">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMCAwLTQgNHYyIj48L3BhdGg+PGNpcmNsZSBjeD0iMTIiIGN5PSI3IiByPSI0Ij48L2NpcmNsZT48L3N2Zz4=" alt="Profile" class="profile-icon" />
-            <span id="profile-address"></span>
-        </button>
-        <div id="profile-dropdown" class="hidden">
-            <div class="dropdown-item" id="wallet-type"></div>
-            <div class="dropdown-item" id="network-info"></div>
-            <div class="dropdown-item" id="full-address"></div>
-            <button id="disconnect-wallet" class="dropdown-item">Disconnect</button>
-        </div>
-    </div>
-
-    <div id="login-container">
-        <h1>Welcome to Glorks</h1>
-        <p class="wallet-info">Connect with Coinbase Wallet, MetaMask, or any Web3 wallet</p>
+    <!-- Simple connect button in header -->
+    <header>
+        <h1>Glorks</h1>
         <button id="connect-wallet">Connect Wallet</button>
-        <p id="wallet-address"></p>
-        <p id="error-message" class="error"></p>
-    </div>
+    </header>
 
-    <div id="game-container" style="display: none;">
+    <!-- Game container -->
+    <main id="game-container">
         <canvas id="gameCanvas"></canvas>
         <div id="score">Score: <span id="scoreValue">0</span></div>
-    </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="login.js"></script>
     <script src="game.js"></script>
     <script src="nftIntegration.js"></script>
-    <script>
-        window.addEventListener('load', () => {
-            if (typeof ethers === 'undefined') {
-                console.error('Ethers.js failed to load');
-                document.getElementById('error-message').textContent = 'Failed to load required dependencies';
-                document.getElementById('error-message').style.display = 'block';
-                return;
-            }
-            new WalletLogin();
-        });
-    </script>
 </body>
 </html> 
