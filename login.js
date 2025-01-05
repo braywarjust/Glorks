@@ -131,16 +131,38 @@ class WalletLogin {
 
     async updateWalletInfo(address) {
         try {
+            console.log('Updating wallet info for address:', address); // Debug log
+            
             const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
             const walletType = this.getWalletType();
             const network = await this.provider.getNetwork();
             
-            // Update profile button
-            document.getElementById('profile-button').classList.remove('hidden');
-            document.getElementById('profile-address').textContent = shortAddress;
-            document.getElementById('wallet-type').textContent = `Wallet: ${walletType}`;
-            document.getElementById('network-info').textContent = `Network: ${network.name}`;
-            document.getElementById('full-address').textContent = `Address: ${address}`;
+            // Update profile button and make it visible
+            const profileButton = document.getElementById('profile-button');
+            const profileAddress = document.getElementById('profile-address');
+            const walletTypeElement = document.getElementById('wallet-type');
+            const networkInfo = document.getElementById('network-info');
+            const fullAddress = document.getElementById('full-address');
+            
+            console.log('Profile elements:', { // Debug log
+                profileButton: !!profileButton,
+                profileAddress: !!profileAddress,
+                walletTypeElement: !!walletTypeElement,
+                networkInfo: !!networkInfo,
+                fullAddress: !!fullAddress
+            });
+
+            if (profileButton) {
+                profileButton.classList.remove('hidden');
+                profileAddress.textContent = shortAddress;
+                walletTypeElement.textContent = `Wallet: ${walletType}`;
+                networkInfo.textContent = `Network: ${network.name}`;
+                fullAddress.textContent = `Address: ${address}`;
+                
+                console.log('Profile button should now be visible'); // Debug log
+            } else {
+                console.error('Profile button not found in DOM');
+            }
             
             // Setup profile dropdown
             this.setupProfileDropdown();
