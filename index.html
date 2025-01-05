@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFT Runner Game</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
 </head>
 <body>
     <div id="login-container">
@@ -20,13 +19,14 @@
         <div id="score">Score: <span id="scoreValue">0</span></div>
     </div>
 
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
     <script src="login.js"></script>
     <script src="game.js"></script>
     <script src="nftIntegration.js"></script>
     <script>
-        window.onload = () => {
+        document.addEventListener('DOMContentLoaded', () => {
             new WalletLogin();
-        };
+        });
     </script>
 </body>
 </html> 

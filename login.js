@@ -1,11 +1,16 @@
 class WalletLogin {
     constructor() {
+        console.log('WalletLogin initialized'); // Debug log
         this.provider = null;
         this.signer = null;
         this.init();
     }
 
     async init() {
+        // Ensure login container is visible
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('game-container').style.display = 'none';
+
         // Check if MetaMask is installed
         if (typeof window.ethereum === 'undefined') {
             this.showError('Please install MetaMask to use this application');
@@ -18,7 +23,11 @@ class WalletLogin {
             
             // Add connect wallet button listener
             const connectButton = document.getElementById('connect-wallet');
-            connectButton.addEventListener('click', () => this.connectWallet());
+            if (connectButton) {
+                connectButton.addEventListener('click', () => this.connectWallet());
+            } else {
+                console.error('Connect wallet button not found');
+            }
         } catch (error) {
             console.error('Initialization error:', error);
             this.showError('Failed to initialize wallet connection');
@@ -53,4 +62,7 @@ class WalletLogin {
         errorElement.textContent = message;
         errorElement.style.display = 'block';
     }
-} 
+}
+
+// Add this line to make the class available globally
+window.WalletLogin = WalletLogin; 
