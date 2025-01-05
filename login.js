@@ -30,36 +30,30 @@ class WalletLogin {
     async forceDisconnect() {
         if (window.ethereum) {
             try {
-                // Different approach for different wallet types
-                if (window.ethereum.isMetaMask) {
-                    // MetaMask specific disconnect
-                    await window.ethereum.request({
-                        method: "wallet_requestPermissions",
-                        params: [{
-                            eth_accounts: {}
-                        }]
-                    });
-                } else {
-                    // Generic approach for other wallets (including Coinbase)
-                    window.ethereum.removeAllListeners();
-                    // Clear any cached connections
-                    await window.ethereum.request({
-                        method: "eth_accounts",
-                        params: []
-                    });
-                }
-
-                // Clear any stored wallet connection data
+                // Simple approach that works for all wallets
+                window.ethereum.removeAllListeners();
+                
+                // Clear any stored data
                 if (typeof localStorage !== 'undefined') {
-                    localStorage.removeItem('walletconnect');
-                    localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
+                    localStorage.clear(); // Clear all localStorage
                 }
-
+                
+                // Reset the provider and signer
+                this.provider = null;
+                this.signer = null;
+                
+                // Force a page reload to clear all state
+                window.location.reload();
+                
             } catch (error) {
                 console.log('Error during disconnect:', error);
+                // Even if there's an error, try to reload the page
+                window.location.reload();
             }
+        } else {
+            // If no ethereum object, just reload the page
+            window.location.reload();
         }
-        this.handleDisconnect();
     }
 
     async init() {
@@ -229,13 +223,6 @@ class WalletLogin {
         document.getElementById('profile-button').classList.add('hidden');
         document.getElementById('profile-dropdown').classList.remove('show');
         document.getElementById('error-message').style.display = 'none';
-        
-        // Reset provider and signer
-        this.provider = null;
-        this.signer = null;
-        
-        // Force page reload to clear any remaining state
-        window.location.reload();
     }
 
     showError(message) {
