@@ -70,4 +70,23 @@ body {
     color: #ff0000;
     margin-top: 1rem;
     display: none;
+}
+
+.wallet-info {
+    color: #666;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+#wallet-address {
+    background: #f5f5f5;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    font-family: monospace;
+}
+
+#connect-wallet:disabled {
+    background: #ccc;
+    cursor: not-allowed;
 } 

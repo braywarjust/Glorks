@@ -1,21 +1,27 @@
 class WalletLogin {
     constructor() {
-        console.log('WalletLogin initialized'); // Debug log
+        console.log('WalletLogin initialized');
         this.provider = null;
         this.signer = null;
         
-        // Add MetaMask detection debug
-        if (typeof window.ethereum !== 'undefined') {
-            console.log('MetaMask is installed!');
+        // Check for any Web3 provider
+        if (window.ethereum) {
+            console.log('Web3 provider detected:', window.ethereum.constructor.name);
+            // Log available wallet info
+            if (window.ethereum.isCoinbaseWallet) {
+                console.log('Coinbase Wallet is available');
+            }
+            if (window.ethereum.isMetaMask) {
+                console.log('MetaMask is available');
+            }
         } else {
-            console.log('MetaMask is not installed.');
+            console.log('No Web3 provider detected');
         }
         
         this.init();
     }
 
     async init() {
-        // Ensure login container is visible
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('game-container').style.display = 'none';
 
@@ -25,25 +31,42 @@ class WalletLogin {
             return;
         }
 
-        // Check if MetaMask is installed
-        if (typeof window.ethereum === 'undefined') {
-            this.showError('Please install MetaMask to use this application');
+        // Check for any Web3 provider
+        if (!window.ethereum) {
+            this.showError('Please install a Web3 wallet (Coinbase Wallet, MetaMask, etc.) to use this application');
             return;
         }
 
         try {
             // Create ethers provider
-            this.provider = new ethers.providers.Web3Provider(window.ethereum);
-            console.log('Provider initialized:', this.provider); // Debug log
+            this.provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+            console.log('Provider initialized:', this.provider);
             
             // Add connect wallet button listener
             const connectButton = document.getElementById('connect-wallet');
             if (connectButton) {
                 connectButton.addEventListener('click', () => this.connectWallet());
-                console.log('Connect button listener added'); // Debug log
+                console.log('Connect button listener added');
             } else {
                 console.error('Connect wallet button not found');
             }
+
+            // Listen for account changes
+            window.ethereum.on('accountsChanged', (accounts) => {
+                console.log('Account changed:', accounts);
+                if (accounts.length === 0) {
+                    this.handleDisconnect();
+                } else {
+                    this.updateWalletInfo(accounts[0]);
+                }
+            });
+
+            // Listen for chain changes
+            window.ethereum.on('chainChanged', (chainId) => {
+                console.log('Network changed:', chainId);
+                window.location.reload();
+            });
+
         } catch (error) {
             console.error('Initialization error:', error);
             this.showError('Failed to initialize wallet connection: ' + error.message);
@@ -53,13 +76,15 @@ class WalletLogin {
     async connectWallet() {
         try {
             // Request account access
-            await window.ethereum.request({ method: 'eth_requestAccounts' });
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             this.signer = this.provider.getSigner();
-            const address = await this.signer.getAddress();
             
-            // Show connected address
-            document.getElementById('wallet-address').textContent = 
-                `Connected: ${address.slice(0, 6)}...${address.slice(-4)}`;
+            // Get connected chain ID
+            const network = await this.provider.getNetwork();
+            console.log('Connected to network:', network.name);
+
+            // Update UI with wallet info
+            await this.updateWalletInfo(accounts[0]);
             
             // Hide login container and show game container
             document.getElementById('login-container').style.display = 'none';
@@ -69,8 +94,35 @@ class WalletLogin {
             const game = new Game();
         } catch (error) {
             console.error('Connection error:', error);
-            this.showError('Failed to connect wallet');
+            this.showError('Failed to connect wallet: ' + error.message);
         }
+    }
+
+    async updateWalletInfo(address) {
+        try {
+            const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
+            const walletType = this.getWalletType();
+            
+            document.getElementById('wallet-address').textContent = 
+                `Connected: ${shortAddress} (${walletType})`;
+        } catch (error) {
+            console.error('Error updating wallet info:', error);
+        }
+    }
+
+    getWalletType() {
+        if (window.ethereum.isCoinbaseWallet) return 'Coinbase Wallet';
+        if (window.ethereum.isMetaMask) return 'MetaMask';
+        return 'Web3 Wallet';
+    }
+
+    handleDisconnect() {
+        console.log('Wallet disconnected');
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('wallet-address').textContent = '';
+        this.provider = null;
+        this.signer = null;
     }
 
     showError(message) {
@@ -80,5 +132,4 @@ class WalletLogin {
     }
 }
 
-// Add this line to make the class available globally
 window.WalletLogin = WalletLogin; 
