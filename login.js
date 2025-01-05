@@ -30,21 +30,18 @@ class WalletLogin {
     async forceDisconnect() {
         if (window.ethereum) {
             try {
-                // Force disconnect all accounts
+                // Simply clear any existing connections
                 await window.ethereum.request({
-                    method: "wallet_requestPermissions",
-                    params: [{
-                        eth_accounts: {}
-                    }]
+                    method: "eth_accounts",
+                    params: []
                 });
                 
-                // Clear any cached permissions
-                await window.ethereum.request({
-                    method: "wallet_revokePermissions",
-                    params: [{
-                        eth_accounts: {}
-                    }]
-                });
+                // Remove all listeners
+                window.ethereum.removeAllListeners();
+                
+                // Clear local state
+                localStorage.removeItem('walletconnect');
+                localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
             } catch (error) {
                 console.log('Error forcing disconnect:', error);
             }
@@ -224,20 +221,8 @@ class WalletLogin {
         if (window.ethereum) {
             try {
                 window.ethereum.removeAllListeners();
-                window.ethereum.request({
-                    method: "eth_accounts"
-                }).then(accounts => {
-                    if (accounts.length > 0) {
-                        window.ethereum.request({
-                            method: "wallet_requestPermissions",
-                            params: [{
-                                eth_accounts: {}
-                            }]
-                        });
-                    }
-                });
             } catch (error) {
-                console.log('Error clearing wallet data:', error);
+                console.log('Error clearing wallet listeners:', error);
             }
         }
     }
