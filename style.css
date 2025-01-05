@@ -6,7 +6,8 @@
 
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
@@ -14,14 +15,12 @@ body {
 
 /* Add styles for logo container and logo */
 #logo-container {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    margin-top: 20px;
 }
 
 #game-logo {
@@ -29,11 +28,11 @@ body {
     height: 1000px;
     display: block;
     object-fit: contain;
-    margin: 0 auto;
 }
 
 #game-container {
     position: relative;
+    margin-top: 20px;
 }
 
 #gameCanvas {
