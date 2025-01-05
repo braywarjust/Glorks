@@ -6,7 +6,7 @@
 
 body {
     min-height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #808080;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,34 +16,35 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 40px;
 }
 
 #logo-box {
-    width: 40vw;
-    height: 40vh;
+    width: 400px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    border-radius: 10px;
-    box-shadow: none;
-    margin-bottom: 2vh;
 }
 
 #game-logo {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transform: scale(2);
 }
 
 #game-container {
     position: relative;
+    background-color: #d3d3d3;
+    border-radius: 20px;
+    padding: 20px;
+    width: 840px;
+    height: 440px;
 }
 
 #gameCanvas {
-    border: 2px solid #000;
+    border: none;
 }
 
 #score {
