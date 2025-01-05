@@ -8,8 +8,8 @@
         "logo2": "assets/logo2.png",
         "logo3": "assets/logo3.png",
         "player": {
-            "run": "assets/player-run.sprite",
-            "jump": "assets/player-jump.sprite"
+            "run": "assets/player-run.png",
+            "jump": "assets/player-jump.png"
         },
         "obstacle": "assets/obstacle.png",
         "background": "assets/background.jpg"

@@ -1,16 +1,30 @@
 class Sprite {
     constructor(imageSource, frameWidth, frameHeight, frameCount) {
         this.image = new Image();
-        this.image.src = imageSource;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.frameCount = frameCount;
         this.currentFrame = 0;
-        this.animationSpeed = 5; // Frames to wait before next sprite frame
+        this.animationSpeed = 5;
         this.frameCounter = 0;
+        this.loaded = false;
+        
+        // Add error handling for image loading
+        this.image.onload = () => {
+            this.loaded = true;
+            console.log('Sprite loaded:', imageSource);
+        };
+        
+        this.image.onerror = () => {
+            console.error('Failed to load sprite:', imageSource);
+        };
+        
+        this.image.src = imageSource;
     }
 
     update() {
+        if (!this.loaded) return;
+        
         this.frameCounter++;
         if (this.frameCounter >= this.animationSpeed) {
             this.currentFrame = (this.currentFrame + 1) % this.frameCount;
@@ -19,13 +33,19 @@ class Sprite {
     }
 
     draw(ctx, x, y) {
-        ctx.drawImage(
-            this.image,
-            this.currentFrame * this.frameWidth, 0,
-            this.frameWidth, this.frameHeight,
-            x, y,
-            this.frameWidth, this.frameHeight
-        );
+        if (!this.loaded) return;
+        
+        try {
+            ctx.drawImage(
+                this.image,
+                this.currentFrame * this.frameWidth, 0,
+                this.frameWidth, this.frameHeight,
+                x, y,
+                this.frameWidth, this.frameHeight
+            );
+        } catch (error) {
+            console.error('Error drawing sprite:', error);
+        }
     }
 }
 
@@ -42,8 +62,8 @@ class Player {
 
         // Load sprite animations
         this.animations = {
-            run: new Sprite('assets/player-run.sprite', this.width, this.height, 8), // Assuming 8 frames for run
-            jump: new Sprite('assets/player-jump.sprite', this.width, this.height, 6) // Assuming 6 frames for jump
+            run: new Sprite('assets/player-run.png', this.width, this.height, 8),
+            jump: new Sprite('assets/player-jump.png', this.width, this.height, 6)
         };
         this.currentAnimation = this.animations.run;
     }
