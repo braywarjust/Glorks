@@ -20,19 +20,19 @@ body {
 }
 
 #logo-box {
-    width: 300px;  /* Same width as game canvas */
-    height: 300px; /* Adjust height as needed */
+    width: 300px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white; /* Optional: adds a white background */
-    border-radius: 10px;     /* Optional: rounds the corners */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Optional: adds subtle shadow */
+    background-color: transparent;
+    border-radius: 10px;
+    box-shadow: none;
 }
 
 #game-logo {
-    max-width: 33%;
-    max-height: 33%;
+    max-width: 10%;
+    max-height: 10%;
     object-fit: contain;
 }
 
