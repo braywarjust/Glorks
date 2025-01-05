@@ -1,12 +1,21 @@
+/* Reset any inherited styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background: none;
+    border: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #AFAFAF !important;
 }
 
 body {
     min-height: 100vh;
-    background: #AFAFAF;
+    background: #AFAFAF !important;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -42,7 +51,7 @@ body {
     top: 512px;
     width: 1157px;
     height: 380px;
-    background: #D9D9D9;
+    background: #D9D9D9 !important;
     border-radius: 46px;
     padding: 20px;
 }
@@ -57,7 +66,7 @@ body {
     height: 70px;
     right: 141px;
     top: 367px;
-    background: #D9D9D9;
+    background: #D9D9D9 !important;
     border-radius: 50%;
 }
 
