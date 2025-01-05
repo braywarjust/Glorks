@@ -30,20 +30,33 @@ class WalletLogin {
     async forceDisconnect() {
         if (window.ethereum) {
             try {
-                // Simply clear any existing connections
-                await window.ethereum.request({
-                    method: "eth_accounts",
-                    params: []
-                });
-                
-                // Remove all listeners
-                window.ethereum.removeAllListeners();
-                
-                // Clear local state
-                localStorage.removeItem('walletconnect');
-                localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
+                // Different approach for different wallet types
+                if (window.ethereum.isMetaMask) {
+                    // MetaMask specific disconnect
+                    await window.ethereum.request({
+                        method: "wallet_requestPermissions",
+                        params: [{
+                            eth_accounts: {}
+                        }]
+                    });
+                } else {
+                    // Generic approach for other wallets (including Coinbase)
+                    window.ethereum.removeAllListeners();
+                    // Clear any cached connections
+                    await window.ethereum.request({
+                        method: "eth_accounts",
+                        params: []
+                    });
+                }
+
+                // Clear any stored wallet connection data
+                if (typeof localStorage !== 'undefined') {
+                    localStorage.removeItem('walletconnect');
+                    localStorage.removeItem('WALLETCONNECT_DEEPLINK_CHOICE');
+                }
+
             } catch (error) {
-                console.log('Error forcing disconnect:', error);
+                console.log('Error during disconnect:', error);
             }
         }
         this.handleDisconnect();
@@ -206,6 +219,7 @@ class WalletLogin {
 
     handleDisconnect() {
         console.log('Wallet disconnected');
+        
         // Reset UI
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('game-container').style.display = 'none';
@@ -217,14 +231,8 @@ class WalletLogin {
         this.provider = null;
         this.signer = null;
         
-        // Clear any stored wallet data
-        if (window.ethereum) {
-            try {
-                window.ethereum.removeAllListeners();
-            } catch (error) {
-                console.log('Error clearing wallet listeners:', error);
-            }
-        }
+        // Force page reload to clear any remaining state
+        window.location.reload();
     }
 
     showError(message) {
