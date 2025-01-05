@@ -21,8 +21,8 @@ body {
 }
 
 #game-logo {
-    width: 100px;  /* Width in pixels */
-    height: 100px; /* Same as width to maintain square ratio */
+    width: 50px;   /* Smaller width */
+    height: 50px;  /* Smaller height */
     display: block;
     object-fit: contain; /* Maintains aspect ratio */
 }
