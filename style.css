@@ -16,13 +16,14 @@ body {
 #logo-container {
     position: fixed;
     top: 20px;
-    left: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centers the container horizontally */
     z-index: 100;
 }
 
 #game-logo {
-    width: 50px;   /* Smaller width */
-    height: 50px;  /* Smaller height */
+    width: 300px;   /* Larger width */
+    height: 300px;  /* Larger height */
     display: block;
     object-fit: contain; /* Maintains aspect ratio */
 }
