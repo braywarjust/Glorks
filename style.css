@@ -15,17 +15,21 @@ body {
 /* Add styles for logo container and logo */
 #logo-container {
     position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%); /* Centers the container horizontally */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     z-index: 100;
 }
 
 #game-logo {
-    width: 1000px;   /* Much larger width */
-    height: 1000px;  /* Much larger height */
+    width: 1000px;
+    height: 1000px;
     display: block;
-    object-fit: contain; /* Maintains aspect ratio */
+    object-fit: contain;
+    margin: 0 auto;
 }
 
 #game-container {
