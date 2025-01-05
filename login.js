@@ -131,40 +131,43 @@ class WalletLogin {
 
     async updateWalletInfo(address) {
         try {
-            console.log('Updating wallet info for address:', address); // Debug log
+            console.log('Updating wallet info for address:', address);
             
             const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
             const walletType = this.getWalletType();
             const network = await this.provider.getNetwork();
             
-            // Update profile button and make it visible
+            // Get all required elements
             const profileButton = document.getElementById('profile-button');
             const profileAddress = document.getElementById('profile-address');
             const walletTypeElement = document.getElementById('wallet-type');
             const networkInfo = document.getElementById('network-info');
             const fullAddress = document.getElementById('full-address');
             
-            console.log('Profile elements:', { // Debug log
-                profileButton: !!profileButton,
-                profileAddress: !!profileAddress,
-                walletTypeElement: !!walletTypeElement,
-                networkInfo: !!networkInfo,
-                fullAddress: !!fullAddress
-            });
-
-            if (profileButton) {
-                profileButton.classList.remove('hidden');
-                profileAddress.textContent = shortAddress;
-                walletTypeElement.textContent = `Wallet: ${walletType}`;
-                networkInfo.textContent = `Network: ${network.name}`;
-                fullAddress.textContent = `Address: ${address}`;
-                
-                console.log('Profile button should now be visible'); // Debug log
-            } else {
-                console.error('Profile button not found in DOM');
+            if (!profileButton || !profileAddress) {
+                console.error('Profile elements not found:', {
+                    profileButton: !!profileButton,
+                    profileAddress: !!profileAddress
+                });
+                return;
             }
+
+            // Update profile button visibility and content
+            profileButton.classList.remove('hidden');
+            profileAddress.textContent = shortAddress;
             
-            // Setup profile dropdown
+            // Update dropdown content
+            if (walletTypeElement) walletTypeElement.textContent = `Wallet: ${walletType}`;
+            if (networkInfo) networkInfo.textContent = `Network: ${network.name}`;
+            if (fullAddress) fullAddress.textContent = `Address: ${address}`;
+            
+            console.log('Profile updated:', {
+                address: shortAddress,
+                wallet: walletType,
+                network: network.name
+            });
+            
+            // Setup dropdown functionality
             this.setupProfileDropdown();
         } catch (error) {
             console.error('Error updating wallet info:', error);
