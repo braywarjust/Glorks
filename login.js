@@ -3,6 +3,14 @@ class WalletLogin {
         console.log('WalletLogin initialized'); // Debug log
         this.provider = null;
         this.signer = null;
+        
+        // Add MetaMask detection debug
+        if (typeof window.ethereum !== 'undefined') {
+            console.log('MetaMask is installed!');
+        } else {
+            console.log('MetaMask is not installed.');
+        }
+        
         this.init();
     }
 
