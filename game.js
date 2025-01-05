@@ -13,4 +13,9 @@ class Game {
     }
 
     // Add game logic methods here
-} 
+}
+
+// Initialize game when window loads
+window.onload = () => {
+    const game = new Game();
+}; 

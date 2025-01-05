@@ -5,48 +5,15 @@
 }
 
 body {
-    background-color: #f0f0f0;
-    font-family: Arial, sans-serif;
-}
-
-header {
-    background: #fff;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-h1 {
-    color: #333;
-}
-
-#connect-wallet {
-    background: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
-}
-
-#connect-wallet:hover {
-    background: #45a049;
-}
-
-#connect-wallet.connected {
-    background: #666;
-}
-
-#game-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 70px);
-    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#game-container {
+    position: relative;
 }
 
 #gameCanvas {
@@ -55,7 +22,8 @@ h1 {
 
 #score {
     position: absolute;
-    top: 90px;
+    top: 20px;
     left: 20px;
     font-size: 24px;
+    font-family: Arial, sans-serif;
 } 
