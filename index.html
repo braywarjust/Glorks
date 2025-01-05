@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="profile-container">
+        <button id="profile-button" class="hidden">
+            <span id="profile-address"></span>
+            <div id="profile-dropdown" class="hidden">
+                <div class="dropdown-item" id="wallet-type"></div>
+                <div class="dropdown-item" id="network-info"></div>
+                <div class="dropdown-item" id="full-address"></div>
+                <button id="disconnect-wallet" class="dropdown-item">Disconnect</button>
+            </div>
+        </button>
+    </div>
+
     <div id="login-container">
         <h1>Welcome to Glorks</h1>
         <p class="wallet-info">Connect with Coinbase Wallet, MetaMask, or any Web3 wallet</p>

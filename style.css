@@ -89,4 +89,77 @@ body {
 #connect-wallet:disabled {
     background: #ccc;
     cursor: not-allowed;
+}
+
+#profile-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#profile-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+#profile-button:hover {
+    background: #45a049;
+}
+
+#profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    min-width: 200px;
+    display: none;
+}
+
+#profile-dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 8px 15px;
+    color: #333;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropdown-item:hover {
+    background: #f5f5f5;
+}
+
+#disconnect-wallet {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+#disconnect-wallet:hover {
+    background: #fff1f1;
+}
+
+.hidden {
+    display: none !important;
 } 

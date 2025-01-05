@@ -133,12 +133,47 @@ class WalletLogin {
         try {
             const shortAddress = `${address.slice(0, 6)}...${address.slice(-4)}`;
             const walletType = this.getWalletType();
+            const network = await this.provider.getNetwork();
             
-            document.getElementById('wallet-address').textContent = 
-                `Connected: ${shortAddress} (${walletType})`;
+            // Update profile button
+            document.getElementById('profile-button').classList.remove('hidden');
+            document.getElementById('profile-address').textContent = shortAddress;
+            document.getElementById('wallet-type').textContent = `Wallet: ${walletType}`;
+            document.getElementById('network-info').textContent = `Network: ${network.name}`;
+            document.getElementById('full-address').textContent = `Address: ${address}`;
+            
+            // Setup profile dropdown
+            this.setupProfileDropdown();
         } catch (error) {
             console.error('Error updating wallet info:', error);
         }
+    }
+
+    setupProfileDropdown() {
+        const profileButton = document.getElementById('profile-button');
+        const dropdown = document.getElementById('profile-dropdown');
+        const disconnectBtn = document.getElementById('disconnect-wallet');
+
+        // Toggle dropdown on profile button click
+        profileButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            dropdown.classList.remove('show');
+        });
+
+        // Prevent dropdown from closing when clicking inside it
+        dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Handle disconnect button
+        disconnectBtn.addEventListener('click', () => {
+            this.forceDisconnect();
+        });
     }
 
     getWalletType() {
@@ -152,7 +187,8 @@ class WalletLogin {
         // Reset UI
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('game-container').style.display = 'none';
-        document.getElementById('wallet-address').textContent = '';
+        document.getElementById('profile-button').classList.add('hidden');
+        document.getElementById('profile-dropdown').classList.remove('show');
         document.getElementById('error-message').style.display = 'none';
         
         // Reset provider and signer
@@ -162,9 +198,7 @@ class WalletLogin {
         // Clear any stored wallet data
         if (window.ethereum) {
             try {
-                // Remove all event listeners
                 window.ethereum.removeAllListeners();
-                // Clear any cached connections
                 window.ethereum.request({
                     method: "eth_accounts"
                 }).then(accounts => {
