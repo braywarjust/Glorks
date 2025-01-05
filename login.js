@@ -4,6 +4,9 @@ class WalletLogin {
         this.provider = null;
         this.signer = null;
         
+        // Force disconnect on page load/refresh
+        this.handleDisconnect();
+        
         // Check for any Web3 provider
         if (window.ethereum) {
             console.log('Web3 provider detected:', window.ethereum.constructor.name);
@@ -14,6 +17,9 @@ class WalletLogin {
             if (window.ethereum.isMetaMask) {
                 console.log('MetaMask is available');
             }
+            
+            // Clear any existing connections
+            window.ethereum.removeAllListeners();
         } else {
             console.log('No Web3 provider detected');
         }
@@ -118,11 +124,25 @@ class WalletLogin {
 
     handleDisconnect() {
         console.log('Wallet disconnected');
+        // Reset UI
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('game-container').style.display = 'none';
         document.getElementById('wallet-address').textContent = '';
+        document.getElementById('error-message').style.display = 'none';
+        
+        // Reset provider and signer
         this.provider = null;
         this.signer = null;
+        
+        // Clear any stored wallet data
+        if (window.ethereum) {
+            try {
+                // Some wallets support manual disconnection
+                window.ethereum.removeAllListeners();
+            } catch (error) {
+                console.log('Error clearing wallet listeners:', error);
+            }
+        }
     }
 
     showError(message) {
