@@ -5,14 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NFT Runner Game</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
 </head>
 <body>
-    <div id="game-container">
+    <div id="login-container">
+        <h1>Welcome to Glorks</h1>
+        <button id="connect-wallet">Connect Wallet</button>
+        <p id="wallet-address"></p>
+        <p id="error-message" class="error"></p>
+    </div>
+
+    <div id="game-container" style="display: none;">
         <canvas id="gameCanvas"></canvas>
         <div id="score">Score: <span id="scoreValue">0</span></div>
     </div>
 
+    <script src="login.js"></script>
     <script src="game.js"></script>
     <script src="nftIntegration.js"></script>
+    <script>
+        window.onload = () => {
+            new WalletLogin();
+        };
+    </script>
 </body>
 </html> 
