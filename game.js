@@ -1,54 +1,3 @@
-class Sprite {
-    constructor(imageSource, frameWidth, frameHeight, frameCount) {
-        this.image = new Image();
-        this.frameWidth = frameWidth;
-        this.frameHeight = frameHeight;
-        this.frameCount = frameCount;
-        this.currentFrame = 0;
-        this.animationSpeed = 5;
-        this.frameCounter = 0;
-        this.loaded = false;
-        
-        // Add error handling for image loading
-        this.image.onload = () => {
-            this.loaded = true;
-            console.log('Sprite loaded:', imageSource);
-        };
-        
-        this.image.onerror = () => {
-            console.error('Failed to load sprite:', imageSource);
-        };
-        
-        this.image.src = imageSource;
-    }
-
-    update() {
-        if (!this.loaded) return;
-        
-        this.frameCounter++;
-        if (this.frameCounter >= this.animationSpeed) {
-            this.currentFrame = (this.currentFrame + 1) % this.frameCount;
-            this.frameCounter = 0;
-        }
-    }
-
-    draw(ctx, x, y) {
-        if (!this.loaded) return;
-        
-        try {
-            ctx.drawImage(
-                this.image,
-                this.currentFrame * this.frameWidth, 0,
-                this.frameWidth, this.frameHeight,
-                x, y,
-                this.frameWidth, this.frameHeight
-            );
-        } catch (error) {
-            console.error('Error drawing sprite:', error);
-        }
-    }
-}
-
 class Player {
     constructor(game) {
         this.game = game;
@@ -59,13 +8,6 @@ class Player {
         this.vy = 0;
         this.weight = 1;
         this.isJumping = false;
-
-        // Load sprite animations
-        this.animations = {
-            run: new Sprite('assets/player-run.png', this.width, this.height, 8),
-            jump: new Sprite('assets/player-jump.png', this.width, this.height, 6)
-        };
-        this.currentAnimation = this.animations.run;
     }
 
     update() {
@@ -73,20 +15,17 @@ class Player {
         this.y += this.vy;
         if (!this.isOnGround()) {
             this.vy += this.weight;
-            this.currentAnimation = this.animations.jump;
         } else {
             this.vy = 0;
             this.y = this.game.canvas.height - this.height - 20;
             this.isJumping = false;
-            this.currentAnimation = this.animations.run;
         }
-
-        // Update current animation
-        this.currentAnimation.update();
     }
 
     draw(ctx) {
-        this.currentAnimation.draw(ctx, this.x, this.y);
+        // Draw a simple rectangle for now
+        ctx.fillStyle = '#00ff00';
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
     jump() {
