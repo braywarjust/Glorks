@@ -6,22 +6,25 @@
 
 body {
     min-height: 100vh;
-    background-color: #808080;
+    background: #AFAFAF;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 23px;
 }
 
 #main-container {
+    position: relative;
+    width: 1440px;
+    height: 1024px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
 }
 
 #logo-box {
-    width: 400px;
-    height: 200px;
+    width: 489px;
+    height: 489px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -35,16 +38,27 @@ body {
 }
 
 #game-container {
-    position: relative;
-    background-color: #d3d3d3;
-    border-radius: 20px;
+    position: absolute;
+    top: 512px;
+    width: 1157px;
+    height: 380px;
+    background: #D9D9D9;
+    border-radius: 46px;
     padding: 20px;
-    width: 840px;
-    height: 440px;
 }
 
 #gameCanvas {
     border: none;
+}
+
+#circle-element {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    right: 141px;
+    top: 367px;
+    background: #D9D9D9;
+    border-radius: 50%;
 }
 
 #score {
