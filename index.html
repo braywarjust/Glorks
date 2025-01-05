@@ -19,12 +19,21 @@
         <div id="score">Score: <span id="scoreValue">0</span></div>
     </div>
 
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" 
+            integrity="sha512-FWm+z/uLB8DzCxFWxZwZlE8dMgqC5fGlVCJD3uoV3gS8DbHJiGGhxfndGz/KZ6SSiVVfWwzVzXduJbiIgZ/nQ==" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"></script>
     <script src="login.js"></script>
     <script src="game.js"></script>
     <script src="nftIntegration.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
+            if (typeof ethers === 'undefined') {
+                console.error('Ethers.js failed to load');
+                document.getElementById('error-message').textContent = 'Failed to load required dependencies';
+                document.getElementById('error-message').style.display = 'block';
+                return;
+            }
             new WalletLogin();
         });
     </script>
