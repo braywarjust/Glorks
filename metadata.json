@@ -7,7 +7,10 @@
         "logo": "assets/logo.png",
         "logo2": "assets/logo2.png",
         "logo3": "assets/logo3.png",
-        "player": "assets/player.png",
+        "player": {
+            "run": "assets/player-run.sprite",
+            "jump": "assets/player-jump.sprite"
+        },
         "obstacle": "assets/obstacle.png",
         "background": "assets/background.jpg"
     },
