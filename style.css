@@ -22,8 +22,8 @@ body {
 }
 
 #game-logo {
-    width: 300px;   /* Larger width */
-    height: 300px;  /* Larger height */
+    width: 1000px;   /* Much larger width */
+    height: 1000px;  /* Much larger height */
     display: block;
     object-fit: contain; /* Maintains aspect ratio */
 }
