@@ -4,22 +4,18 @@ class WalletLogin {
         this.provider = null;
         this.signer = null;
         
-        // Force disconnect and clear permissions on page load/refresh
-        this.forceDisconnect();
+        // Start with a clean UI state
+        this.handleDisconnect();
         
         // Check for any Web3 provider
         if (window.ethereum) {
             console.log('Web3 provider detected:', window.ethereum.constructor.name);
-            // Log available wallet info
             if (window.ethereum.isCoinbaseWallet) {
                 console.log('Coinbase Wallet is available');
             }
             if (window.ethereum.isMetaMask) {
                 console.log('MetaMask is available');
             }
-            
-            // Clear any existing connections and cached permissions
-            window.ethereum.removeAllListeners();
         } else {
             console.log('No Web3 provider detected');
         }
@@ -27,68 +23,32 @@ class WalletLogin {
         this.init();
     }
 
-    async forceDisconnect() {
-        if (window.ethereum) {
-            try {
-                // Simple approach that works for all wallets
-                window.ethereum.removeAllListeners();
-                
-                // Clear any stored data
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.clear(); // Clear all localStorage
-                }
-                
-                // Reset the provider and signer
-                this.provider = null;
-                this.signer = null;
-                
-                // Force a page reload to clear all state
-                window.location.reload();
-                
-            } catch (error) {
-                console.log('Error during disconnect:', error);
-                // Even if there's an error, try to reload the page
-                window.location.reload();
-            }
-        } else {
-            // If no ethereum object, just reload the page
-            window.location.reload();
-        }
-    }
-
     async init() {
+        // Show login container by default
         document.getElementById('login-container').style.display = 'block';
         document.getElementById('game-container').style.display = 'none';
+        document.getElementById('profile-button').classList.add('hidden');
 
-        // Check if ethers is loaded
         if (typeof ethers === 'undefined') {
             this.showError('Ethers.js library not loaded');
             return;
         }
 
-        // Check for any Web3 provider
         if (!window.ethereum) {
             this.showError('Please install a Web3 wallet (Coinbase Wallet, MetaMask, etc.) to use this application');
             return;
         }
 
         try {
-            // Create ethers provider
             this.provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-            console.log('Provider initialized:', this.provider);
             
-            // Add connect wallet button listener
             const connectButton = document.getElementById('connect-wallet');
             if (connectButton) {
                 connectButton.addEventListener('click', () => this.connectWallet());
-                console.log('Connect button listener added');
-            } else {
-                console.error('Connect wallet button not found');
             }
 
             // Listen for account changes
             window.ethereum.on('accountsChanged', (accounts) => {
-                console.log('Account changed:', accounts);
                 if (accounts.length === 0) {
                     this.handleDisconnect();
                 } else {
@@ -97,8 +57,7 @@ class WalletLogin {
             });
 
             // Listen for chain changes
-            window.ethereum.on('chainChanged', (chainId) => {
-                console.log('Network changed:', chainId);
+            window.ethereum.on('chainChanged', () => {
                 window.location.reload();
             });
 
@@ -106,6 +65,29 @@ class WalletLogin {
             console.error('Initialization error:', error);
             this.showError('Failed to initialize wallet connection: ' + error.message);
         }
+    }
+
+    handleDisconnect() {
+        console.log('Handling disconnect...');
+        
+        // Reset UI state
+        document.getElementById('login-container').style.display = 'block';
+        document.getElementById('game-container').style.display = 'none';
+        document.getElementById('profile-button').classList.add('hidden');
+        document.getElementById('profile-dropdown').classList.remove('show');
+        document.getElementById('error-message').style.display = 'none';
+        
+        // Reset wallet state
+        this.provider = null;
+        this.signer = null;
+        
+        // Remove event listeners
+        if (window.ethereum) {
+            window.ethereum.removeAllListeners();
+        }
+        
+        // Reload the page to ensure a clean state
+        window.location.reload();
     }
 
     async connectWallet() {
@@ -204,7 +186,7 @@ class WalletLogin {
 
         // Handle disconnect button
         disconnectBtn.addEventListener('click', () => {
-            this.forceDisconnect();
+            this.handleDisconnect();
         });
     }
 
@@ -212,17 +194,6 @@ class WalletLogin {
         if (window.ethereum.isCoinbaseWallet) return 'Coinbase Wallet';
         if (window.ethereum.isMetaMask) return 'MetaMask';
         return 'Web3 Wallet';
-    }
-
-    handleDisconnect() {
-        console.log('Wallet disconnected');
-        
-        // Reset UI
-        document.getElementById('login-container').style.display = 'block';
-        document.getElementById('game-container').style.display = 'none';
-        document.getElementById('profile-button').classList.add('hidden');
-        document.getElementById('profile-dropdown').classList.remove('show');
-        document.getElementById('error-message').style.display = 'none';
     }
 
     showError(message) {
