@@ -116,8 +116,11 @@ class WalletLogin {
 
     async connectWallet() {
         try {
-            // Request account access
+            // Request account access first
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            
+            // Re-initialize provider after permission is granted
+            this.provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
             this.signer = this.provider.getSigner();
             
             // Get connected chain ID
